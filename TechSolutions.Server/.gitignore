@@ -1,0 +1,39 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.db
+
+# ASP.NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# SQLite
+*.db
+*.db-journal
+
+# Node.js / React
+node_modules/
+build/
+dist/
+.env
+.env.local
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+log/
+
+# Others
+.DS_Store
+Thumbs.db
+.vs
