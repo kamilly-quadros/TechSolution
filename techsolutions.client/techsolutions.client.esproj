@@ -11,5 +11,6 @@
   <ItemGroup>
     <Folder Include="src\components\historyModal\" />
     <Folder Include="src\components\Header\" />
+    <Folder Include="src\pages\EquipmentActivity\" />
   </ItemGroup>
 </Project>

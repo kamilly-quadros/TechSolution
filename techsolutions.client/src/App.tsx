@@ -3,6 +3,7 @@ import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import EquipmentForm from "./components/EquipmentForm/EquipmentForm";
 import EquipmentDetails from "./pages/EquipmentDetails/EquipmentDetails";
+import EquipmentActivity from "./pages/EquipmentActivity/EquipmentActivity";
 import type { JSX } from "react";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
@@ -19,6 +20,7 @@ export default function App() {
                 <Route path="/equipment/new" element={<PrivateRoute><EquipmentForm /></PrivateRoute>} />
                 <Route path="/equipment/edit/:id" element={<PrivateRoute><EquipmentForm /></PrivateRoute>} />
                 <Route path="/equipment/:id" element={<PrivateRoute><EquipmentDetails /></PrivateRoute>} />
+                <Route path="/equipment/:id/log-activity" element={<PrivateRoute><EquipmentActivity /></PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     );

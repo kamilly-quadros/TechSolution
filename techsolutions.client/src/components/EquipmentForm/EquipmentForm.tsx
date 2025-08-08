@@ -6,7 +6,11 @@ import styles from "./EquipmentForm.module.css";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export default function EquipmentForm() {
+interface EquipmentFormProps {
+    disabled?: boolean;
+}
+
+export default function EquipmentForm({ disabled = false }: EquipmentFormProps) {
     const { id } = useParams();
     const [name, setName] = useState("");
     const [serialNumber, setSerial] = useState("");
@@ -81,7 +85,11 @@ export default function EquipmentForm() {
                 <Box className={styles.contentContainer}>
                     <form onSubmit={save}>
                         <Typography variant="h5" gutterBottom mb={4}>
-                            {id ? "Editar Equipamento" : "Novo Equipamento"}
+                            {disabled
+                                ? "Visualizar Equipamento"
+                                : id
+                                    ? "Editar Equipamento"
+                                    : "Cadastrar Equipamento"}
                         </Typography>
                         <Stack direction="column" spacing={2} justifyContent="center" alignContent="center" alignItems="center">
                             <TextField
@@ -92,6 +100,8 @@ export default function EquipmentForm() {
                                 sx={[textFieldStyles, { width: "20rem" }]}
                                 margin="normal"
                                 required
+                                inputProps={{ maxLenght: "100" }}
+                                disabled={disabled}
                             />
                             <TextField
                                 label="Número de Série"
@@ -101,6 +111,8 @@ export default function EquipmentForm() {
                                 sx={[textFieldStyles, { width: "20rem" }]}
                                 margin="normal"
                                 required
+                                inputProps={{ maxLenght: "100" }}
+                                disabled={disabled}
                             />
                             <TextField
                                 label="Descrição"
@@ -112,8 +124,10 @@ export default function EquipmentForm() {
                                 rows={2}
                                 margin="normal"
                                 required
+                                inputProps={{ maxLenght: "200" }}
+                                disabled={disabled}
                             />
-                            <FormControl variant="standard" margin="normal" required sx={{ width: "20rem", ...selectStyles }}>
+                            <FormControl variant="standard" margin="normal" required sx={{ width: "20rem", ...selectStyles }} disabled={disabled}>
                                 <InputLabel>Filial</InputLabel>
                                 <Select
                                     value={branchId}
@@ -123,12 +137,25 @@ export default function EquipmentForm() {
                                     <MenuItem value={2}>Filial 1</MenuItem>
                                 </Select>
                             </FormControl>
-                            <Box alignSelf="end" sx={{ marginRight: "10rem" }} >
-                                <Button
-                                    component={Link}
-                                    to="/dashboard"
-                                    variant="contained"
-                                    sx={{
+                            {disabled == false && (
+                                <Box alignSelf="end" sx={{ marginRight: "10rem" }} >
+
+                                    <Button
+                                        component={Link}
+                                        to="/dashboard"
+                                        variant="contained"
+                                        sx={{
+                                            marginTop: "1rem",
+                                            marginRight: "1rem",
+                                            backgroundColor: "var(--secondary-color)",
+                                            "&:hover": {
+                                                backgroundColor: "var(--secondary-color-medium)",
+                                                color: "var(--primary-color)"
+                                            },
+                                        }}>
+                                        Cancelar
+                                    </Button>
+                                    <Button type="submit" variant="contained" sx={{
                                         marginTop: "1rem",
                                         marginRight: "1rem",
                                         backgroundColor: "var(--secondary-color)",
@@ -137,20 +164,30 @@ export default function EquipmentForm() {
                                             color: "var(--primary-color)"
                                         },
                                     }}>
-                                    Cancelar
-                                </Button>
-                                <Button type="submit" variant="contained" sx={{
-                                    marginTop:"1rem",
-                                    marginRight: "1rem",
-                                    backgroundColor: "var(--secondary-color)",
-                                    "&:hover": {
-                                        backgroundColor: "var(--secondary-color-medium)",
-                                        color: "var(--primary-color)"
-                                    },
-                                }}>
-                                    Salvar
-                                </Button>
-                            </Box>
+                                        Salvar
+                                    </Button>
+                                </Box>
+                            )}
+                            {disabled && (
+                                <Box alignSelf="end" sx={{ marginRight: "10rem" }} >
+
+                                    <Button
+                                        component={Link}
+                                        to="/dashboard"
+                                        variant="contained"
+                                        sx={{
+                                            marginTop: "1rem",
+                                            marginRight: "1rem",
+                                            backgroundColor: "var(--secondary-color)",
+                                            "&:hover": {
+                                                backgroundColor: "var(--secondary-color-medium)",
+                                                color: "var(--primary-color)"
+                                            },
+                                        }}>
+                                        Voltar
+                                    </Button>
+                                </Box>
+                            ) }
                         </Stack>
                     </form>
                 </Box>

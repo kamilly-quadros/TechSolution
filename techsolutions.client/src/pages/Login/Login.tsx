@@ -84,6 +84,7 @@ export default function Login() {
                         variant="standard"
                         sx={textFieldStyles}
                         required
+                        inputProps={{maxLenght:"100"} }
                     />
                     <TextField
                         label="Senha"
@@ -93,6 +94,7 @@ export default function Login() {
                         variant="standard"
                         sx={textFieldStyles}
                         required
+                        inputProps={{ maxLenght: "100" }}
                     />
                     <Button
                         type="submit"

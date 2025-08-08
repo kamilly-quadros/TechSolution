@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import {
     Table,
     TableBody,
@@ -92,6 +93,16 @@ export default function EquipmentList() {
                                                 size="small"
                                             >
                                                 <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Registrar atividade">
+                                            <IconButton
+                                                component={Link}
+                                                to={`/equipment/${e.id}/log-activity`}
+                                                size="small"
+                                                sx={{ color: "var(--details-light)" }}
+                                            >
+                                                <NoteAddIcon />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title="Excluir">
