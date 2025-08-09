@@ -1,7 +1,6 @@
 ﻿.container {
     background-color: var(--primary-color);
-    color: var(--secondary-color);
-    box-sizing:border-box;
+    color: var(--secondary-color);   
 }
 
 .container h2{

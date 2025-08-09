@@ -1,8 +1,10 @@
-﻿import { TextField, Box, Button } from "@mui/material";
+﻿import { TextField, Box} from "@mui/material";
 import styles from "../login/loginPage.module.css";
 import { useState } from "react";
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import ButtonComponent from "../../components/ButtonComponent/ButtonComponent"; 
 
 
 export default function Login() {
@@ -16,7 +18,17 @@ export default function Login() {
             localStorage.setItem("token", res.data.token);
             navigate("/dashboard");
         } catch (err) {
-            alert("Usuário ou senha inválidos");
+            toast.error('Usuário ou senha inválidos', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
         }
     };
     const textFieldStyles = {
@@ -84,7 +96,7 @@ export default function Login() {
                         variant="standard"
                         sx={textFieldStyles}
                         required
-                        inputProps={{maxLenght:"100"} }
+                        inputProps={{maxLength:"100"} }
                     />
                     <TextField
                         label="Senha"
@@ -94,27 +106,12 @@ export default function Login() {
                         variant="standard"
                         sx={textFieldStyles}
                         required
-                        inputProps={{ maxLenght: "100" }}
+                        inputProps={{ maxLength: "100" }}
                     />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "var(--secondary-color)",
-                            color: "var(--primary-color)",
-                            fontWeight: "bold",
-                            textTransform: "none",
-                            borderRadius: "8px",
-                            padding: "0.5rem 2rem",
-                            "&:hover": {
-                                backgroundColor: "var(--secondary-color-medium)",
-                            },
-                        }}
-                    >
-                        Entrar
-                    </Button>
+                    <ButtonComponent text="Entrar" type="submit"/>
                 </form>
             </Box>
+            <ToastContainer/>
         </div>
     );
 }

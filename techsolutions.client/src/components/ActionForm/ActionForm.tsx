@@ -1,6 +1,9 @@
 ﻿import { useState } from "react";
-import { Box, Button, MenuItem, Select, TextField, FormControl, InputLabel } from "@mui/material";
+import { Box, MenuItem, Select, TextField, FormControl, InputLabel } from "@mui/material";
 import api from "../../api/api";
+import styles from "./ActionForm.module.css";
+import ButtonComponent from '../ButtonComponent/ButtonComponent';
+import { Link } from "react-router-dom";
 
 interface Props {
     equipmentId: number;
@@ -61,16 +64,9 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
         <Box
             component="form"
             onSubmit={save}
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                maxWidth: 900,
-                minWidth: 300,
-                p: 3
-            }}
+            className={styles.contentContainer}
         >
-            <FormControl fullWidth sx={selectStyles}>
+            <FormControl sx={[selectStyles, { width: "20rem" }]}>
                 <InputLabel>Tipo de Ação</InputLabel>
                 <Select value={actionType} label="Tipo de Ação" onChange={(e) => setType(e.target.value)}>
                     <MenuItem value="EnterMaintenance">Manutenção</MenuItem>
@@ -79,7 +75,7 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
                 </Select>
             </FormControl>
             {actionType === "Transfer" && (
-                <FormControl fullWidth sx={selectStyles}>
+                <FormControl sx={[selectStyles, { width: "20rem" }]}>
                     <InputLabel>Destino</InputLabel>
                     <Select
                         value={destinationBranchId ?? ""}
@@ -98,17 +94,13 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 fullWidth
-                sx={textFieldStyles}
+                sx={[textFieldStyles, { width: "20rem" }]}
+                inputProps={{ maxLength: "200" }}
             />
-            <Button type="submit" variant="contained" sx={{
-                backgroundColor: "var(--secondary-color)",
-                "&:hover": {
-                    backgroundColor: "var(--secondary-color-medium)",
-                    color: "var(--primary-color)"
-                },
-            }}>
-                Registrar
-            </Button>
+            <Box alignSelf="end" sx={{ display:"flex",gap: "1rem" }} >
+                <ButtonComponent text="Cancelar" component={Link}  to="/dashboard" />
+                <ButtonComponent text="Registrar" type="submit" />
+            </Box>
         </Box>
     );
 }

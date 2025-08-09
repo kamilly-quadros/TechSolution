@@ -3,8 +3,9 @@ import api from "../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import styles from "./EquipmentForm.module.css";
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import ButtonComponent from "../ButtonComponent/ButtonComponent";
 
 interface EquipmentFormProps {
     disabled?: boolean;
@@ -100,7 +101,7 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                 sx={[textFieldStyles, { width: "20rem" }]}
                                 margin="normal"
                                 required
-                                inputProps={{ maxLenght: "100" }}
+                                inputProps={{ maxLength: "100" }}
                                 disabled={disabled}
                             />
                             <TextField
@@ -111,20 +112,19 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                 sx={[textFieldStyles, { width: "20rem" }]}
                                 margin="normal"
                                 required
-                                inputProps={{ maxLenght: "100" }}
+                                inputProps={{ maxLength: "100" }}
                                 disabled={disabled}
                             />
                             <TextField
                                 label="Descrição"
+                                multiline
+                                minRows={2}
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
-                                variant="standard"
+                                fullWidth
                                 sx={[textFieldStyles, { width: "20rem" }]}
-                                multiline
-                                rows={2}
-                                margin="normal"
                                 required
-                                inputProps={{ maxLenght: "200" }}
+                                inputProps={{ maxLength: "200" }}
                                 disabled={disabled}
                             />
                             <FormControl variant="standard" margin="normal" required sx={{ width: "20rem", ...selectStyles }} disabled={disabled}>
@@ -137,57 +137,30 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                     <MenuItem value={2}>Filial 1</MenuItem>
                                 </Select>
                             </FormControl>
-                            {disabled == false && (
-                                <Box alignSelf="end" sx={{ marginRight: "10rem" }} >
-
-                                    <Button
-                                        component={Link}
-                                        to="/dashboard"
-                                        variant="contained"
+                            <Box alignSelf="end" sx={{ marginRight: "10rem" }}>
+                                {(!disabled
+                                    ? [
+                                        { text: "Cancelar", to: "/dashboard" },
+                                        { text: "Salvar", type: "submit" as const }
+                                    ]
+                                    : [
+                                        { text: "Voltar", to: "/dashboard" }
+                                    ]
+                                ).map(({ text, to, type }) => (
+                                    <ButtonComponent
+                                        key={text}
+                                        component={to ? Link : undefined}
+                                        to={to}
+                                        type={type}
                                         sx={{
                                             marginTop: "1rem",
                                             marginRight: "1rem",
-                                            backgroundColor: "var(--secondary-color)",
-                                            "&:hover": {
-                                                backgroundColor: "var(--secondary-color-medium)",
-                                                color: "var(--primary-color)"
-                                            },
-                                        }}>
-                                        Cancelar
-                                    </Button>
-                                    <Button type="submit" variant="contained" sx={{
-                                        marginTop: "1rem",
-                                        marginRight: "1rem",
-                                        backgroundColor: "var(--secondary-color)",
-                                        "&:hover": {
-                                            backgroundColor: "var(--secondary-color-medium)",
-                                            color: "var(--primary-color)"
-                                        },
-                                    }}>
-                                        Salvar
-                                    </Button>
-                                </Box>
-                            )}
-                            {disabled && (
-                                <Box alignSelf="end" sx={{ marginRight: "10rem" }} >
-
-                                    <Button
-                                        component={Link}
-                                        to="/dashboard"
-                                        variant="contained"
-                                        sx={{
-                                            marginTop: "1rem",
-                                            marginRight: "1rem",
-                                            backgroundColor: "var(--secondary-color)",
-                                            "&:hover": {
-                                                backgroundColor: "var(--secondary-color-medium)",
-                                                color: "var(--primary-color)"
-                                            },
-                                        }}>
-                                        Voltar
-                                    </Button>
-                                </Box>
-                            ) }
+                                        }}
+                                    >
+                                        {text}
+                                    </ButtonComponent>
+                                ))}
+                            </Box>
                         </Stack>
                     </form>
                 </Box>

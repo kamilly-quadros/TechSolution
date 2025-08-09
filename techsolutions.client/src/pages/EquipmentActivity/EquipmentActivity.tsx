@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { ActionRecord, Equipment } from "../../types";
 import api from "../../api/api";
 import { Box, Divider, List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
+import styles from "./EquipmentActivity.module.css";
 
 type ActionType = "EnterMaintenance" | "Transfer" | "Discard" | "Other";
 
@@ -32,13 +33,14 @@ export default function EquipmentActivity() {
     return (
         <>
             <Header />
-            <Paper sx={{ p: 3, mb: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div className={styles.container}>
+                <Paper className={styles.contentContainer}>
                 <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: "var(--secondary-color)" }}>
                     Registrar Ação
                 </Typography>
                 <ActionForm equipmentId={equipment.id} onDone={load} />
-            </Paper>
-            <Paper sx={{ p: 3 }}>
+                </Paper>
+                <Paper className={styles.contentContainer}>
                 <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: "var(--secondary-color)" }}>
                     Histórico
                 </Typography>
@@ -59,7 +61,7 @@ export default function EquipmentActivity() {
                                         }
                                     />
                                 </ListItem>
-                                {index < history.length - 1 && <Divider />}
+                                {index < history.length - 1 && <Divider sx={{ borderColor: "var(--details)" }} />}
                             </Box>
                         ))
                     ) : (
@@ -69,6 +71,7 @@ export default function EquipmentActivity() {
                     )}
                 </List>
                 </Paper>
+            </div>
         </>
     );
 }

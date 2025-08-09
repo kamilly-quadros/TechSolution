@@ -2,7 +2,6 @@
 import { useParams } from "react-router-dom";
 import api from "../../api/api";
 import type { Equipment } from "../../types";
-import styles from "./EquipmentDetails.module.css";
 import EquipmentForm from "../../components/EquipmentForm/EquipmentForm";
 
 export default function EquipmentDetails() {
@@ -19,7 +18,7 @@ export default function EquipmentDetails() {
 
     return (
         <>
-            <div className={styles.container}>
+            <div>
                     <EquipmentForm disabled={true} />
             </div>
         </>

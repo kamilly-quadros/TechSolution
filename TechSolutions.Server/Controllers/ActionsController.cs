@@ -10,6 +10,7 @@ namespace TechSolutions.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ActionsController : ControllerBase
 {
     private readonly TechSolutionsDbContext _db;
