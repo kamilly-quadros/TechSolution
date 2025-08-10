@@ -10,21 +10,23 @@ export default function Dashboard() {
             <Header />
             <div className={styles.container}>
                 <div className={styles.contentContainer}>
-                    <h1>Equipamentos</h1>
-                    <ButtonComponent
-                        component={Link}
-                        to="/equipment/new"
-                        sx={{
-                            color: "var(--primary-color)",
-                            fontWeight: "bold",
-                            borderRadius: "8px",
-                            padding: "0.5rem 1rem",
-                            width: "10rem",
-                            alignSelf: "end"
-                        }}
-                    >
-                        Cadastrar
-                    </ButtonComponent>
+                    <div className={styles.headerRow}>
+                        <h1>Equipamentos</h1>
+                        <ButtonComponent
+                            component={Link}
+                            to="/equipment/new"
+                            sx={{
+                                color: "var(--primary-color)",
+                                fontWeight: "bold",
+                                borderRadius: "8px",
+                                padding: "0.5rem 1rem",
+                                width: "10rem",
+                                alignSelf: "center",
+                            }}
+                        >
+                            Cadastrar
+                        </ButtonComponent>
+                    </div>
                     <EquipmentList />
                 </div>
             </div>

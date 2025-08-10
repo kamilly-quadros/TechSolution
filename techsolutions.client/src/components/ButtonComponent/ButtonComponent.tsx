@@ -20,8 +20,8 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({
                 backgroundColor: "var(--secondary-color)",
                 textTransform: "none",
                 "&:hover": {
-                    backgroundColor: "var(--secondary-color-medium)",
-                    color: "var(--primary-color)",
+                    backgroundColor: "var(--secondary-color-light)",
+                    color: "var(--primary-color-light)",
                 },
                 ...sx,
             }}

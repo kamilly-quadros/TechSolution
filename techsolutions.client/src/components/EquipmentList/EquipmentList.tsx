@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import NoteAddIcon from '@mui/icons-material/NoteAdd'
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import { useTheme, useMediaQuery } from "@mui/material";
 import {
     Table,
     TableBody,
@@ -28,6 +29,8 @@ export default function EquipmentList() {
     const [equipments, setEquipments] = useState<Equipment[]>([]);
     const [openDelete, setOpenDelete] = useState(false);
     const [equipmentToDelete, setEquipmentToDelete] = useState<Equipment | null>(null);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const load = async () => {
         try {
             const res = await api.get("/equipments");
@@ -53,74 +56,147 @@ export default function EquipmentList() {
         setEquipmentToDelete(null);
     };
 
-    useEffect(() => { load(); }, []);    
-    
+    useEffect(() => { load(); }, []);
+
     return (
         <>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ fontSize: "1rem", fontWeight: "bold" }}>Nome</TableCell>
-                            <TableCell sx={{ fontSize: "1rem", fontWeight: "bold" }}>Número de Série</TableCell>
-                            <TableCell sx={{ fontSize: "1rem", fontWeight: "bold" }}>Estado</TableCell>
-                            <TableCell sx={{ fontSize: "1rem", fontWeight: "bold" }}>Ações</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {equipments.map((e) => (
-                            <TableRow key={e.id}>
-                                <TableCell>{e.name}</TableCell>
-                                <TableCell>{e.serialNumber}</TableCell>
-                                <TableCell>{e.state}</TableCell>
-                                <TableCell sx={{ width:"1rem" }}>
-                                    <Stack direction="row" spacing={2}>
-                                        <Tooltip title="Ver detalhes">
-                                            <IconButton
-                                                component={Link}
-                                                to={`/equipment/${e.id}`}
-                                                size="small"
-                                                sx={{ color: "var(--secondary-color)" }}
-                                            >
-                                                <VisibilityIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Editar">
-                                            <IconButton
-                                                component={Link}
-                                                to={`/equipment/edit/${e.id}`}
-                                                sx={{ color: "var(--details)" }}
-                                                size="small"
-                                            >
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Registrar atividade">
-                                            <IconButton
-                                                component={Link}
-                                                to={`/equipment/${e.id}/log-activity`}
-                                                size="small"
-                                                sx={{ color: "var(--details-light)" }}
-                                            >
-                                                <NoteAddIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Excluir">
-                                            <IconButton
-                                                onClick={() => handleDeleteClick(e)}
-                                                color="error"
-                                                size="small"
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Stack>
-                                </TableCell>
+            {!isMobile ? (
+                <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: "bold" }}>Nome</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }}>Número de Série</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }}>Estado</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }}>Ações</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {equipments.map((e) => (
+                                <TableRow key={e.id}>
+                                    <TableCell>{e.name}</TableCell>
+                                    <TableCell>{e.serialNumber}</TableCell>
+                                    <TableCell>{e.state}</TableCell>
+                                    <TableCell>
+                                        <Stack direction="row" spacing={1}>
+                                            <Tooltip title="Ver detalhes">
+                                                <IconButton
+                                                    component={Link}
+                                                    to={`/equipment/${e.id}`}
+                                                    size="small"
+                                                    sx={{ color: "var(--secondary-color)" }}
+                                                >
+                                                    <VisibilityIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Editar">
+                                                <IconButton
+                                                    component={Link}
+                                                    to={`/equipment/edit/${e.id}`}
+                                                    sx={{ color: "var(--details)" }}
+                                                    size="small"
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Registrar atividade">
+                                                <IconButton
+                                                    component={Link}
+                                                    to={`/equipment/${e.id}/log-activity`}
+                                                    size="small"
+                                                    sx={{ color: "var(--details-light)" }}
+                                                >
+                                                    <NoteAddIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Excluir">
+                                                <IconButton
+                                                    onClick={() => handleDeleteClick(e)}
+                                                    color="error"
+                                                    size="small"
+                                                    sx={{
+                                                        outline: "none",
+                                                        "&:focus": {
+                                                            outline: "none",
+                                                        },
+                                                        "&:focus-visible": {
+                                                            outline: "none",
+                                                        }
+                                                    }}
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+
+                                            </Tooltip>
+                                        </Stack>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            ) : (
+                <Stack spacing={2}>
+                    {equipments.map((e) => (
+                        <Paper key={e.id} sx={{ p: 2 }}>
+                            <strong>{e.name}</strong>
+                            <div><b>Número de Série: </b>{e.serialNumber}</div>
+                            <div><b>Estado: </b>{e.state}</div>
+                            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                                <Tooltip title="Ver detalhes">
+                                    <IconButton
+                                        component={Link}
+                                        to={`/equipment/${e.id}`}
+                                        size="small"
+                                        sx={{ color: "var(--secondary-color)" }}
+                                    >
+                                        <VisibilityIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Editar">
+                                    <IconButton
+                                        component={Link}
+                                        to={`/equipment/edit/${e.id}`}
+                                        sx={{ color: "var(--details)" }}
+                                        size="small"
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Registrar atividade">
+                                    <IconButton
+                                        component={Link}
+                                        to={`/equipment/${e.id}/log-activity`}
+                                        size="small"
+                                        sx={{ color: "var(--details-light)" }}
+                                    >
+                                        <NoteAddIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Excluir">
+                                    <IconButton
+                                        onClick={() => handleDeleteClick(e)}
+                                        color="error"
+                                        size="small"
+                                        sx={{
+                                            outline: "none",
+                                            "&:focus": {
+                                                outline: "none",
+                                            },
+                                            "&:focus-visible": {
+                                                outline: "none",
+                                            }
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+
+                                </Tooltip>
+                            </Stack>
+                        </Paper>
+                    ))}
+                </Stack>
+            )}
             <Dialog open={openDelete} onClose={handleCancelDelete}>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
                 <DialogContent>

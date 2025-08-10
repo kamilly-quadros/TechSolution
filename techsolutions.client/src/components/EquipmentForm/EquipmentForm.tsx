@@ -11,6 +11,13 @@ interface EquipmentFormProps {
     disabled?: boolean;
 }
 
+type BtnItem = {
+    text: string;
+    to?: string;
+    type?: "submit" | "button";
+    sx?: object;
+};
+
 export default function EquipmentForm({ disabled = false }: EquipmentFormProps) {
     const { id } = useParams();
     const [name, setName] = useState("");
@@ -92,13 +99,13 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                     ? "Editar Equipamento"
                                     : "Cadastrar Equipamento"}
                         </Typography>
-                        <Stack direction="column" spacing={2} justifyContent="center" alignContent="center" alignItems="center">
+                        <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
                             <TextField
                                 label="Nome"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 variant="standard"
-                                sx={[textFieldStyles, { width: "20rem" }]}
+                                sx={[textFieldStyles, { width: "100%" }]}
                                 margin="normal"
                                 required
                                 inputProps={{ maxLength: "100" }}
@@ -109,7 +116,7 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                 value={serialNumber}
                                 onChange={(e) => setSerial(e.target.value)}
                                 variant="standard"
-                                sx={[textFieldStyles, { width: "20rem" }]}
+                                sx={[textFieldStyles, { width: "100%" }]}
                                 margin="normal"
                                 required
                                 inputProps={{ maxLength: "100" }}
@@ -121,13 +128,18 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                 minRows={2}
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
-                                fullWidth
-                                sx={[textFieldStyles, { width: "20rem" }]}
+                                sx={[textFieldStyles, { width: "100%" }]}
                                 required
                                 inputProps={{ maxLength: "200" }}
                                 disabled={disabled}
                             />
-                            <FormControl variant="standard" margin="normal" required sx={{ width: "20rem", ...selectStyles }} disabled={disabled}>
+                            <FormControl
+                                variant="standard"
+                                margin="normal"
+                                required
+                                sx={{ width: "100%", ...selectStyles }}
+                                disabled={disabled}
+                            >
                                 <InputLabel>Filial</InputLabel>
                                 <Select
                                     value={branchId}
@@ -137,29 +149,48 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                     <MenuItem value={2}>Filial 1</MenuItem>
                                 </Select>
                             </FormControl>
-                            <Box alignSelf="end" sx={{ marginRight: "10rem" }}>
+
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    gap: "0.5rem",
+                                    flexWrap: "wrap",
+                                    width: "100%"
+                                }}
+                            >
                                 {(!disabled
                                     ? [
-                                        { text: "Cancelar", to: "/dashboard" },
-                                        { text: "Salvar", type: "submit" as const }
-                                    ]
-                                    : [
-                                        { text: "Voltar", to: "/dashboard" }
-                                    ]
-                                ).map(({ text, to, type }) => (
-                                    <ButtonComponent
-                                        key={text}
-                                        component={to ? Link : undefined}
-                                        to={to}
-                                        type={type}
-                                        sx={{
-                                            marginTop: "1rem",
-                                            marginRight: "1rem",
-                                        }}
-                                    >
-                                        {text}
-                                    </ButtonComponent>
-                                ))}
+                                        {
+                                            text: "Cancelar",
+                                            to: "/dashboard",
+                                            sx: {
+                                                backgroundColor: "var(--primary-color)",
+                                                color: "var(--secondary-color)",
+                                                "&:hover": {
+                                                    backgroundColor: "var(--details)",
+                                                    color: "var(--primary-color)"
+                                                },
+                                            },
+                                        },
+                                        { text: "Salvar", type: "submit" as const },
+                                    ] as BtnItem[]
+                                    : [{ text: "Voltar", to: "/dashboard" } as BtnItem]).map(({ text, to, type, sx }) => (
+                                        <ButtonComponent
+                                            key={text}
+                                            component={to ? Link : undefined}
+                                            to={to}
+                                            type={type}
+                                            sx={{
+                                                flex: 1,
+                                                minWidth: "120px",
+                                                textAlign: "center",
+                                                ...sx,
+                                            }}
+                                        >
+                                            {text}
+                                        </ButtonComponent>
+                                    ))}
                             </Box>
                         </Stack>
                     </form>
