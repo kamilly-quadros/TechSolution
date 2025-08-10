@@ -38,7 +38,7 @@ export default function EquipmentActivity() {
         } finally {
             setLoading(false);
         }
-    }, [id, equipment?.branchId]);
+    }, [id]);
 
     useEffect(() => {
         load();
