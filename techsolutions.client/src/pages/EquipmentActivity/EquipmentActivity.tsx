@@ -68,7 +68,7 @@ export default function EquipmentActivity() {
                                 <Box key={a.id}>
                                     <ListItem disablePadding>
                                         <ListItemText
-                                            primaryTypographyProps={{ sx: { color: "var(--secondary-color)" } }}
+                                            primaryTypographyProps={{ sx: { color: "var(--secondary-color)", fontWeight:"bold" } }}
                                             secondaryTypographyProps={{ sx: { color: "var(--secondary-color)" } }}
                                             primary={`${new Date(a.date).toLocaleDateString("pt-BR")} - ${statusEnumMap[a.actionType as ActionType] ?? "Desconhecido"}`}
                                             secondary={

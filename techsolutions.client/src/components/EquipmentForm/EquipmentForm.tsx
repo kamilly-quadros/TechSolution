@@ -3,7 +3,7 @@ import api from "../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import styles from "./EquipmentForm.module.css";
-import { Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 
@@ -24,6 +24,7 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
     const [serialNumber, setSerial] = useState("");
     const [description, setDesc] = useState("");
     const [branchId, setBranchId] = useState(1);
+    const [address, setAddress] = useState("");
     const navigate = useNavigate();
     const textFieldStyles = {
         "& .MuiInputLabel-root": {
@@ -85,6 +86,18 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
             });
         }
     }, [id]);
+    useEffect(() => {
+        const addresses: Record<number, string> = {
+            1: "Bairro do Limoeiro, 123",
+            2: "Rua dos Bobos, 0",
+            3: "Barker Street, 221B",
+        };
+        if (branchId) {
+            setAddress(addresses[branchId]);
+        } else {
+            setAddress("");
+        }
+    }, [branchId]);
 
     return (
         <>
@@ -147,7 +160,9 @@ export default function EquipmentForm({ disabled = false }: EquipmentFormProps) 
                                 >
                                     <MenuItem value={1}>Matriz</MenuItem>
                                     <MenuItem value={2}>Filial 1</MenuItem>
+                                    <MenuItem value={3}>Filial 2</MenuItem>
                                 </Select>
+                                <FormHelperText>{address}</FormHelperText>
                             </FormControl>
 
                             <Box

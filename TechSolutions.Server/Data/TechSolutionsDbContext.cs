@@ -10,7 +10,6 @@ public class TechSolutionsDbContext : DbContext
     public DbSet<Equipment> Equipments => Set<Equipment>();
     public DbSet<ActionRecord> ActionRecords => Set<ActionRecord>();
     public TechSolutionsDbContext(DbContextOptions<TechSolutionsDbContext> options) : base(options) { }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -18,7 +17,8 @@ public class TechSolutionsDbContext : DbContext
         modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin", PasswordHash = pwdHash, FullName = "Administrador" });
         modelBuilder.Entity<Branch>().HasData(
             new Branch { Id = 1, Name = "Matriz", Address = "Bairro do Limoeiro, 123" },
-            new Branch { Id = 2, Name = "Filial 1", Address = "Rua dos Bobos, 0" }
+            new Branch { Id = 2, Name = "Filial 1", Address = "Rua dos Bobos, 0" },
+            new Branch { Id = 3, Name = "Filial 2", Address = "Barker Street, 221B" }
         );
     }
 }

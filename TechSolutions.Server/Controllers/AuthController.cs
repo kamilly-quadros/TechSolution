@@ -20,25 +20,32 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
-        if (user == null) return Unauthorized("Usuário ou senha inválidos");
-        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-            return Unauthorized("Usuário ou senha inválidos");
-        var jwtSection = _config.GetSection("Jwt");
-        var key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
-        var claims = new[]
+        try
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim("FullName", user.FullName)
-        };
-        var token = new JwtSecurityToken(
-            issuer: jwtSection["Issuer"],
-            audience: jwtSection["Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSection["ExpireMinutes"]!)),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-        );
-        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+            if (user == null) return Unauthorized("Usuário ou senha inválidos");
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                return Unauthorized("Usuário ou senha inválidos");
+            var jwtSection = _config.GetSection("Jwt");
+            var key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim("FullName", user.FullName)
+            };
+            var token = new JwtSecurityToken(
+                issuer: jwtSection["Issuer"],
+                audience: jwtSection["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSection["ExpireMinutes"]!)),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            );
+            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Erro interno no servidor: " + ex.Message);
+        }
     }
 }

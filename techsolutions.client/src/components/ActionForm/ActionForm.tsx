@@ -1,5 +1,5 @@
-﻿import { useState } from "react";
-import { Box, MenuItem, Select, TextField, FormControl, InputLabel, Stack } from "@mui/material";
+﻿import { useEffect, useState } from "react";
+import { Box, MenuItem, Select, TextField, FormControl, InputLabel, Stack, FormHelperText } from "@mui/material";
 import api from "../../api/api";
 import ButtonComponent from '../ButtonComponent/ButtonComponent';
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ interface Props {
 export default function ActionForm({ equipmentId, onDone }: Props) {
     const [actionType, setType] = useState("EnterMaintenance");
     const [comment, setComment] = useState("");
+    const [address, setAddress] = useState("");
     const [destinationBranchId, setDest] = useState<number | undefined>();
     const selectStyles = {
         "& .MuiInputLabel-root": {
@@ -59,6 +60,19 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
         onDone();
     };
 
+    useEffect(() => {
+        const addresses: Record<number, string> = {
+            1: "Bairro do Limoeiro, 123",
+            2: "Rua dos Bobos, 0",
+            3: "Barker Street, 221B",
+        };
+        if (destinationBranchId) {
+            setAddress(addresses[destinationBranchId]);
+        } else {
+            setAddress("");
+        }
+    }, [destinationBranchId]);
+
     return (
         <Box
             component="form"
@@ -90,9 +104,11 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
                         onChange={(e) => setDest(Number(e.target.value))}
                         label="Destino"
                     >
-                        <MenuItem value={2}>Filial 1</MenuItem>
                         <MenuItem value={1}>Matriz</MenuItem>
+                        <MenuItem value={2}>Filial 1</MenuItem>
+                        <MenuItem value={3}>Filial 2</MenuItem>
                     </Select>
+                    <FormHelperText>{address}</FormHelperText>
                 </FormControl>
             )}
             <TextField
@@ -125,3 +141,4 @@ export default function ActionForm({ equipmentId, onDone }: Props) {
         </Box>
     );
 }
+
