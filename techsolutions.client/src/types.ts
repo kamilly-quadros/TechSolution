@@ -20,4 +20,5 @@ export interface ActionRecord {
     date: string;
     performedByUser?: { fullName: string };
     destinationBranch?: Branch;
+    sourceBranch?: Branch;
 }

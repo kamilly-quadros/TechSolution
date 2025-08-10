@@ -35,6 +35,7 @@ public class ActionsController : ControllerBase
                 ActionType = actionType,
                 Comment = dto.Comment,
                 DestinationBranchId = destBranchId,
+                SourceBranchId = equipment.BranchId,
                 PerformedByUserId = userId,
                 Date = DateTime.UtcNow
             };
@@ -72,6 +73,7 @@ public class ActionsController : ControllerBase
             .Where(r => r.EquipmentId == equipmentId)
             .Include(r => r.PerformedByUser)
             .Include(r => r.DestinationBranch)
+            .Include(r => r.SourceBranch)
             .OrderByDescending(r => r.Date)
             .ToListAsync();
             return Ok(records);

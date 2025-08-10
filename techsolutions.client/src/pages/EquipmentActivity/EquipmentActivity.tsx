@@ -38,7 +38,7 @@ export default function EquipmentActivity() {
         } finally {
             setLoading(false);
         }
-    }, [id]);
+    }, [id, equipment?.branchId]);
 
     useEffect(() => {
         load();
@@ -47,7 +47,7 @@ export default function EquipmentActivity() {
     if (loading) return <p>Carregando...</p>;
     if (error) return <p>{error}</p>;
     if (!equipment) return <p>Equipamento não encontrado.</p>;
-
+    
     return (
         <>
             <Header />
@@ -70,7 +70,12 @@ export default function EquipmentActivity() {
                                         <ListItemText
                                             primaryTypographyProps={{ sx: { color: "var(--secondary-color)", fontWeight:"bold" } }}
                                             secondaryTypographyProps={{ sx: { color: "var(--secondary-color)" } }}
-                                            primary={`${new Date(a.date).toLocaleDateString("pt-BR")} - ${statusEnumMap[a.actionType as ActionType] ?? "Desconhecido"}`}
+                                            primary={
+                                                `${new Date(a.date).toLocaleDateString("pt-BR")} - ${a.actionType === "Transfer"
+                                                    ? `Transferido de ${a.sourceBranch?.name ?? "N/A"} para ${a.destinationBranch?.name ?? "N/A"}`
+                                                    : statusEnumMap[a.actionType as ActionType] ?? "Desconhecido"
+                                                }`
+                                            }
                                             secondary={
                                                 <>
                                                     {a.comment && <span>{a.comment} — </span>}

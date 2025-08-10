@@ -20,4 +20,6 @@ public class ActionRecord
     public User? PerformedByUser { get; set; }
     public int? DestinationBranchId { get; set; }
     public Branch? DestinationBranch { get; set; }
+    public int? SourceBranchId { get; set; }
+    public Branch? SourceBranch { get; set; }
 }
